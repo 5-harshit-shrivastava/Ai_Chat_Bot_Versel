@@ -53,11 +53,11 @@ Visit: `http://localhost:8080`
 ## 💡 Widget Integration
 
 ### Add to Any Website
-Simply include these files in your webpage:
+Simply include these files from the deployed frontend:
 
 ```html
 <!-- Add CSS -->
-<link rel="stylesheet" href="widget.css">
+<link rel="stylesheet" href="https://ask-chat-bot.onrender.com/widget.css">
 
 <!-- Add Widget HTML Structure -->
 <div class="rag-chatbot-toggle" id="ragChatbotToggle">
@@ -72,7 +72,7 @@ Simply include these files in your webpage:
 </div>
 
 <!-- Add JavaScript -->
-<script src="widget.js"></script>
+<script src="https://ask-chat-bot.onrender.com/widget.js"></script>
 <script>
     // Widget auto-initializes with deployed backend
     const chatbot = new RAGChatbotWidget({
@@ -119,8 +119,9 @@ window.ragChatbot = new RAGChatbotWidget({
 - **Database**: PostgreSQL with pgvector on Neon
 - **AI Model**: Google Gemini integrated
 
-### Frontend - 📁 LOCAL
-- Ready for deployment to any static hosting
+### Frontend - ✅ DEPLOYED
+- **URL**: https://ask-chat-bot.onrender.com
+- **Status**: Live and operational
 - Can be embedded in any website
 - No build process required - pure HTML/CSS/JS
 
@@ -167,4 +168,8 @@ MIT License - feel free to use in your projects!
 
 ---
 
-**Ready to use!** The backend is deployed and the frontend widget can be embedded anywhere. Just copy the widget files and you're good to go! 🚀
+## 🌐 **LIVE DEMO**
+
+**Try it now**: https://ask-chat-bot.onrender.com
+
+**Ready to use!** Both frontend and backend are fully deployed. The widget can be embedded anywhere using the live URLs above! 🚀

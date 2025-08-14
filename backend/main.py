@@ -38,8 +38,13 @@ async def startup():
 
 @app.get("/")
 async def root():
-    """Redirects to the API documentation."""
-    return RedirectResponse(url="/docs")
+    """API status endpoint."""
+    return {"status": "healthy", "message": "RAG Chatbot API is running"}
+
+@app.get("/health")
+async def health():
+    """Health check endpoint."""
+    return {"status": "healthy"}
 
 @app.get("/favicon.ico", include_in_schema=False)
 async def favicon():

@@ -203,7 +203,7 @@ class RAGChatbotWidget {
 document.addEventListener('DOMContentLoaded', function() {
     // You can customize the configuration here
     window.ragChatbot = new RAGChatbotWidget({
-        apiBaseUrl: 'http://localhost:8000', // Change this to your backend URL
+        // apiBaseUrl will be auto-detected by getApiBaseUrl() method
         position: 'bottom-right'
     });
 });

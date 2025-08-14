@@ -1,0 +1,23 @@
+{
+  "name": "rag-chatbot-frontend",
+  "version": "1.0.0",
+  "description": "RAG AI Chatbot Widget Frontend",
+  "main": "index.html",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "python -m http.server 8080",
+    "build": "echo 'Static site - no build needed'"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/rag-chatbot-project.git"
+  },
+  "author": "Your Name",
+  "license": "MIT"
+}

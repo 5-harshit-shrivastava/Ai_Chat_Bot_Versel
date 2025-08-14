@@ -1,96 +1,43 @@
 # RAG AI Chatbot
 
-A modern RAG (Retrieval Augmented Generation) chatbot with document upload and Q&A capabilities, featuring an AskDisha 2.0 inspired UI.
+A modern AI-powered knowledge assistant chatbot featuring an AskDisha 2.0 inspired UI with floating animation and voice input capabilities.
 
 ## 🚀 Features
 
-- **Document Upload & Processing** - Upload TXT, PDF, DOC files
-- **Vector Search** - PostgreSQL with pgvector for semantic search
-- **AI-Powered Chat** - Google Gemini integration for responses
-- **Modern UI** - AskDisha 2.0 inspired floating widget design
+- **AI-Powered Chat** - Google Gemini integration for intelligent responses
+- **Modern UI** - AskDisha 2.0 inspired floating widget design with animated avatar
 - **Voice Input** - Speech recognition support
 - **Mobile Responsive** - Works on all devices
 - **Easy Embedding** - Drop-in widget for any website
+- **Real-time Chat** - Instant responses and typing indicators
 
 ## 🏗️ Architecture
 
-### Backend (FastAPI)
+### Backend (FastAPI) - **DEPLOYED** ✅
 - **FastAPI** - Modern Python web framework
 - **PostgreSQL + pgvector** - Vector database for embeddings
 - **Google Gemini** - AI model for generating responses
 - **Sentence Transformers** - Text embedding generation
+- **Deployed URL**: `https://ai-chat-bot-ote0.onrender.com`
 
 ### Frontend (Vanilla JS)
 - **Pure HTML/CSS/JS** - No frameworks, fast loading
-- **Floating Widget** - Non-intrusive chat interface
-- **Real-time Chat** - WebSocket-like experience
+- **Floating Widget** - Non-intrusive chat interface with animated avatar
+- **Real-time Chat** - Smooth user experience
 - **Voice Integration** - Speech recognition API
 
-## 📦 Deployment
+## 🌐 Live Backend API
 
-### Backend Deployment (Render)
+**Base URL**: `https://ai-chat-bot-ote0.onrender.com`
 
-1. **Create Backend Service on Render:**
-```bash
-# Connect your GitHub repository
-# Service Type: Web Service
-# Environment: Python
-# Build Command: pip install -r requirements.txt  
-# Start Command: python main.py
-```
-
-2. **Environment Variables to Set:**
-```
-NEON_DATABASE_URL=postgresql://username:password@host:5432/database
-GEMINI_API_KEY=your_google_gemini_api_key
-PORT=8000
-```
-
-3. **Deploy Commands:**
-```bash
-cd backend
-git add .
-git commit -m "Backend ready for deployment"
-git push origin main
-```
-
-### Frontend Deployment (Render)
-
-1. **Create Frontend Service on Render:**
-```bash
-# Service Type: Static Site
-# Build Command: npm install
-# Publish Directory: ./
-```
-
-2. **Update Backend URL:**
-- Edit `frontend/widget.js` line 27
-- Replace `your-backend-name.onrender.com` with your actual backend URL
-
-3. **Deploy Commands:**
-```bash
-cd frontend
-npm install
-git add .
-git commit -m "Frontend ready for deployment"
-git push origin main
-```
+### Available Endpoints:
+- `GET /` - Health check
+- `GET /health` - Service status  
+- `POST /chat` - Send chat messages
+- `POST /documents` - Add documents (backend only)
+- `DELETE /documents` - Clear documents (backend only)
 
 ## 🔧 Local Development
-
-### Backend Setup
-```bash
-cd backend
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-pip install -r requirements.txt
-
-# Set environment variables
-export NEON_DATABASE_URL="your_postgres_url"
-export GEMINI_API_KEY="your_gemini_key"
-
-python main.py
-```
 
 ### Frontend Setup
 ```bash
@@ -103,66 +50,121 @@ npm start
 
 Visit: `http://localhost:8080`
 
-## 🌐 API Endpoints
+## 💡 Widget Integration
 
-### POST `/chat`
-```json
-{
-  "query": "What is the capital of Canada?"
-}
-```
+### Add to Any Website
+Simply include these files in your webpage:
 
-### POST `/documents`
-```json
-{
-  "content": "Document text content...",
-  "metadata": {"filename": "doc.txt"}
-}
-```
-
-### DELETE `/documents`
-Clears all documents from database.
-
-## 💡 Usage
-
-### Embed Widget on Any Website
 ```html
-<!-- Add to your website -->
-<link rel="stylesheet" href="https://your-frontend-url.onrender.com/widget.css">
-<script src="https://your-frontend-url.onrender.com/widget.js"></script>
+<!-- Add CSS -->
+<link rel="stylesheet" href="widget.css">
 
-<!-- Widget will auto-initialize -->
+<!-- Add Widget HTML Structure -->
+<div class="rag-chatbot-toggle" id="ragChatbotToggle">
+    <svg viewBox="0 0 24 24">
+        <path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h4l4 4 4-4h4c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/>
+    </svg>
+</div>
+
+<!-- Full widget structure (copy from index.html) -->
+<div class="rag-chatbot-widget" id="ragChatbotWidget">
+    <!-- Widget content -->
+</div>
+
+<!-- Add JavaScript -->
+<script src="widget.js"></script>
+<script>
+    // Widget auto-initializes with deployed backend
+    const chatbot = new RAGChatbotWidget({
+        apiBaseUrl: 'https://ai-chat-bot-ote0.onrender.com'
+    });
+</script>
 ```
 
 ### Custom Configuration
 ```javascript
 window.ragChatbot = new RAGChatbotWidget({
-    apiBaseUrl: 'https://your-backend.onrender.com',
+    apiBaseUrl: 'https://ai-chat-bot-ote0.onrender.com',
     position: 'bottom-right'
 });
 ```
 
-## 🔒 Security
+## 🎨 UI Features
 
-- CORS properly configured
-- Input validation and sanitization
-- Environment variables for sensitive data
-- No API keys exposed in frontend
+- **Floating Avatar Animation** - The girl icon in the header has a smooth floating animation
+- **Clean Design** - Minimalist interface focused on chat interaction
+- **Voice Input Button** - Click microphone icon for speech recognition
+- **Responsive Layout** - Adapts to mobile and desktop screens
+- **Smooth Transitions** - Polished animations and hover effects
 
 ## 📱 Mobile Support
 
-- Responsive design
-- Touch-friendly interface
-- Voice input on mobile devices
-- Optimized for all screen sizes
+- Responsive design that adapts to mobile screens
+- Touch-friendly interface with proper button sizing
+- Voice input works on mobile devices
+- Full-screen chat on smaller devices
 
-## 🎨 Customization
+## 🔒 Security
 
-- Modify `widget.css` for styling changes
-- Update colors, fonts, animations
-- Add custom branding and logos
-- Extend functionality in `widget.js`
+- Backend properly deployed with environment variables
+- CORS configured for frontend integration
+- Input validation and sanitization
+- No sensitive data exposed in frontend code
+
+## 🚀 Deployment Status
+
+### Backend - ✅ DEPLOYED
+- **URL**: https://ai-chat-bot-ote0.onrender.com
+- **Status**: Live and operational
+- **Database**: PostgreSQL with pgvector on Neon
+- **AI Model**: Google Gemini integrated
+
+### Frontend - 📁 LOCAL
+- Ready for deployment to any static hosting
+- Can be embedded in any website
+- No build process required - pure HTML/CSS/JS
+
+## 🎯 How It Works
+
+1. **User opens chat** - Clicks the blue floating chat button
+2. **Welcome message** - AI greets user as knowledge assistant
+3. **User asks questions** - Types or uses voice input
+4. **AI responds** - Gemini processes and returns intelligent answers
+5. **Continuous chat** - Real-time conversation experience
+
+## 🔧 Customization
+
+### Styling
+- Modify `widget.css` for visual changes
+- Update colors, fonts, and animations
+- Customize avatar image URL
+- Adjust widget size and positioning
+
+### Functionality  
+- Extend `widget.js` for new features
+- Modify welcome messages
+- Add custom chat commands
+- Integrate with other APIs
+
+## 📄 File Structure
+
+```
+rag-chatbot-project/
+├── backend/              # Deployed FastAPI backend
+│   ├── main.py          # Main application
+│   ├── requirements.txt # Dependencies
+│   └── Dockerfile       # Container config
+└── frontend/            # Chat widget
+    ├── index.html       # Demo page
+    ├── widget.css       # Widget styles
+    ├── widget.js        # Widget functionality
+    └── server.js        # Development server
+```
 
 ## 📄 License
 
 MIT License - feel free to use in your projects!
+
+---
+
+**Ready to use!** The backend is deployed and the frontend widget can be embedded anywhere. Just copy the widget files and you're good to go! 🚀

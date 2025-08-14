@@ -36,8 +36,6 @@ class RAGChatbotWidget {
         this.inputField = document.getElementById('ragChatbotInputField');
         this.sendBtn = document.getElementById('ragChatbotSendBtn');
         this.voiceBtn = document.getElementById('ragChatbotVoiceBtn');
-        this.uploadBtn = document.getElementById('ragChatbotUpload');
-        this.fileInput = document.getElementById('ragChatbotFileInput');
         this.typing = document.getElementById('ragChatbotTyping');
     }
 
@@ -46,8 +44,6 @@ class RAGChatbotWidget {
         this.closeBtn.addEventListener('click', () => this.closeWidget());
         this.sendBtn.addEventListener('click', () => this.sendMessage());
         this.voiceBtn.addEventListener('click', () => this.toggleVoiceInput());
-        this.uploadBtn.addEventListener('click', () => this.fileInput.click());
-        this.fileInput.addEventListener('change', (e) => this.handleFileUpload(e));
         
         this.inputField.addEventListener('keypress', (e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
@@ -170,46 +166,6 @@ class RAGChatbotWidget {
         }
     }
 
-    async handleFileUpload(event) {
-        const file = event.target.files[0];
-        if (!file) return;
-
-        const reader = new FileReader();
-        reader.onload = async (e) => {
-            const content = e.target.result;
-            
-            try {
-                const response = await fetch(`${this.config.apiBaseUrl}/documents`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        content: content,
-                        metadata: {
-                            filename: file.name,
-                            fileType: file.type,
-                            uploadedAt: new Date().toISOString()
-                        }
-                    })
-                });
-
-                const data = await response.json();
-                
-                if (response.ok) {
-                    this.addMessage(`✅ Document "${file.name}" uploaded successfully! You can now ask questions about it.`, 'bot');
-                } else {
-                    throw new Error(data.detail || 'Failed to upload document');
-                }
-            } catch (error) {
-                this.addMessage('❌ Failed to upload document. Please try again.', 'bot');
-                console.error('Upload error:', error);
-            }
-        };
-        
-        reader.readAsText(file);
-        event.target.value = '';
-    }
 
     addMessage(text, sender) {
         const messageDiv = document.createElement('div');

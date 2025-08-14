@@ -80,6 +80,7 @@
     width: 100%;
     height: 100%;
     object-fit: contain;
+    animation: float 3s ease-in-out infinite;
 }
 
 .rag-chatbot-title {
@@ -121,6 +122,13 @@
     align-items: center;
     justify-content: space-between;
     gap: 12px;
+}
+
+.rag-chatbot-banner-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
 }
 
 .rag-chatbot-character {

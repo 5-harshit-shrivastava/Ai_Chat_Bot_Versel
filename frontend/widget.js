@@ -24,7 +24,7 @@ class RAGChatbotWidget {
             return 'http://localhost:8000';
         } else {
             // Replace with your actual backend URL on Render
-            return 'https://your-backend-name.onrender.com';
+            return 'https://ai-chat-bot-ote0.onrender.com';
         }
     }
 

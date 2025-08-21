@@ -29,9 +29,9 @@ requirements.txt     # Minimal dependencies
 ```bash
 # In Vercel Dashboard → Settings → Environment Variables:
 
-HUGGINGFACE_API_TOKEN=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
-GEMINI_API_KEY=AIzaSyAmDgT-_MMyaXkrJSyjAae8a_amiID6Oms
-NEON_DATABASE_URL=postgresql://neondb_owner:npg_4MwpAhIlPt5x@ep-small-flower-adimixak-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+HUGGINGFACE_API_TOKEN=your_huggingface_token_here
+GEMINI_API_KEY=your_gemini_api_key_here
+NEON_DATABASE_URL=your_neon_database_url_here
 ```
 
 ### **2. Deploy:**

@@ -1,8 +1,7 @@
 {
   "functions": {
     "api/chat.py": {
-      "runtime": "python3.9",
-      "memory": 512
+      "runtime": "@vercel/python"
     }
   }
 }

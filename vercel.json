@@ -4,10 +4,5 @@
       "runtime": "python3.9",
       "memory": 512
     }
-  },
-  "env": {
-    "HUGGINGFACE_API_TOKEN": "@huggingface_api_token",
-    "GEMINI_API_KEY": "@gemini_api_key", 
-    "NEON_DATABASE_URL": "@neon_database_url"
   }
 }

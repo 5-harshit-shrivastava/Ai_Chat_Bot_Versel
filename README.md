@@ -1,4 +1,25 @@
-# RAG AI Chatbot
+# 🚀 RAG Chatbot - Production Ready
+
+## Features
+- ✅ BAAI/bge-small-en-v1.5 embeddings (384 dimensions)
+- ✅ Vercel serverless deployment 
+- ✅ Neon PostgreSQL with vector search
+- ✅ Google Gemini AI responses
+- ✅ Environment variable configuration
+
+## Deployment
+1. Set environment variables in Vercel dashboard
+2. Deploy from this repository
+3. Test with your queries
+
+## Environment Variables
+```
+HUGGINGFACE_API_TOKEN=your_token
+GEMINI_API_KEY=your_key  
+NEON_DATABASE_URL=your_database_url
+```
+
+System is ready for production deployment! 🎉
 
 A modern AI-powered knowledge assistant chatbot featuring an AskDisha 2.0 inspired UI with floating animation and voice input capabilities.
 

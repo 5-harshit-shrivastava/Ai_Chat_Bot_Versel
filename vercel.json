@@ -1,1 +1,12 @@
-{}
+{
+  "functions": {
+    "api/*.py": {
+      "runtime": "@vercel/python"
+    }
+  },
+  "build": {
+    "env": {
+      "PYTHONPATH": "./"
+    }
+  }
+}

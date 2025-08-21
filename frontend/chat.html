@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navyakosh RAG Chatbot</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .chat-container {
+            width: 90%;
+            max-width: 800px;
+            height: 600px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .chat-header {
+            background: #4a5568;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .chat-header h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .chat-header p {
+            opacity: 0.8;
+            font-size: 14px;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #f7fafc;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            padding: 12px 15px;
+            border-radius: 15px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+        
+        .user-message {
+            background: #667eea;
+            color: white;
+            margin-left: auto;
+            text-align: right;
+        }
+        
+        .bot-message {
+            background: white;
+            color: #2d3748;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .loading {
+            background: white;
+            color: #718096;
+            border: 1px solid #e2e8f0;
+            font-style: italic;
+        }
+        
+        .chat-input {
+            display: flex;
+            padding: 20px;
+            background: white;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .chat-input input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 25px;
+            outline: none;
+            font-size: 14px;
+        }
+        
+        .chat-input input:focus {
+            border-color: #667eea;
+        }
+        
+        .chat-input button {
+            margin-left: 10px;
+            padding: 12px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+        
+        .chat-input button:hover:not(:disabled) {
+            background: #5a67d8;
+        }
+        
+        .chat-input button:disabled {
+            background: #a0aec0;
+            cursor: not-allowed;
+        }
+        
+        .suggestions {
+            display: flex;
+            gap: 10px;
+            padding: 0 20px 20px;
+            flex-wrap: wrap;
+        }
+        
+        .suggestion {
+            padding: 8px 15px;
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid #667eea;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            color: #667eea;
+            transition: all 0.3s;
+        }
+        
+        .suggestion:hover {
+            background: #667eea;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h1>🌾 Navyakosh RAG Assistant</h1>
+            <p>Ask me anything about Navyakosh fertilizer application</p>
+        </div>
+        
+        <div class="suggestions">
+            <div class="suggestion" onclick="sendSuggestion('Tell me about Navyakosh fertilizer')">About Navyakosh</div>
+            <div class="suggestion" onclick="sendSuggestion('What is the application rate for sugarcane?')">Application Rate</div>
+            <div class="suggestion" onclick="sendSuggestion('When should I apply Navyakosh?')">Timing</div>
+            <div class="suggestion" onclick="sendSuggestion('What are the benefits of Navyakosh?')">Benefits</div>
+        </div>
+        
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot-message">
+                👋 Hello! I'm your Navyakosh assistant. I can help you with fertilizer application rates, timing, benefits, and usage instructions for sugarcane cultivation. What would you like to know?
+            </div>
+        </div>
+        
+        <div class="chat-input">
+            <input type="text" id="messageInput" placeholder="Ask about Navyakosh fertilizer..." onkeypress="handleKeyPress(event)">
+            <button onclick="sendMessage()" id="sendButton">Send</button>
+        </div>
+    </div>
+
+    <script>
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const messages = document.getElementById('chatMessages');
+            const sendButton = document.getElementById('sendButton');
+            
+            const query = input.value.trim();
+            if (!query) return;
+            
+            // Add user message
+            const userMessage = document.createElement('div');
+            userMessage.className = 'message user-message';
+            userMessage.textContent = query;
+            messages.appendChild(userMessage);
+            
+            // Add loading message
+            const loadingMessage = document.createElement('div');
+            loadingMessage.className = 'message loading';
+            loadingMessage.textContent = 'Thinking...';
+            messages.appendChild(loadingMessage);
+            
+            // Clear input and disable button
+            input.value = '';
+            sendButton.disabled = true;
+            messages.scrollTop = messages.scrollHeight;
+            
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ query })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    // Remove loading message
+                    messages.removeChild(loadingMessage);
+                    
+                    // Add bot response
+                    const botMessage = document.createElement('div');
+                    botMessage.className = 'message bot-message';
+                    botMessage.textContent = data.response;
+                    messages.appendChild(botMessage);
+                } else {
+                    // Remove loading message
+                    messages.removeChild(loadingMessage);
+                    
+                    // Add error message
+                    const errorMessage = document.createElement('div');
+                    errorMessage.className = 'message bot-message';
+                    errorMessage.textContent = 'Sorry, I encountered an error. Please try again.';
+                    messages.appendChild(errorMessage);
+                }
+            } catch (error) {
+                // Remove loading message
+                messages.removeChild(loadingMessage);
+                
+                // Add error message
+                const errorMessage = document.createElement('div');
+                errorMessage.className = 'message bot-message';
+                errorMessage.textContent = 'Sorry, I\'m having trouble connecting. Please try again.';
+                messages.appendChild(errorMessage);
+            }
+            
+            // Re-enable button and scroll
+            sendButton.disabled = false;
+            messages.scrollTop = messages.scrollHeight;
+        }
+        
+        function sendSuggestion(text) {
+            document.getElementById('messageInput').value = text;
+            sendMessage();
+        }
+        
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+        
+        // Focus input on load
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('messageInput').focus();
+        });
+    </script>
+</body>
+</html>

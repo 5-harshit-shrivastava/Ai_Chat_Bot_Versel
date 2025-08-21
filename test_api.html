@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test RAG Chatbot API</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .chat-container { border: 1px solid #ddd; border-radius: 8px; padding: 20px; margin: 20px 0; }
+        .input-group { margin: 10px 0; }
+        input[type="text"] { width: 70%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
+        button { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        .response { background: #f8f9fa; padding: 15px; border-radius: 4px; margin: 10px 0; white-space: pre-wrap; }
+        .loading { color: #666; font-style: italic; }
+        .error { color: #dc3545; background: #f8d7da; border: 1px solid #f5c6cb; }
+        .success { color: #155724; background: #d4edda; border: 1px solid #c3e6cb; }
+    </style>
+</head>
+<body>
+    <h1>🤖 Navyakosh RAG Chatbot Test</h1>
+    <p><strong>API Endpoint:</strong> <code>https://ai-chat-bot-versel-vw5h.vercel.app/api/chat</code></p>
+    
+    <div class="chat-container">
+        <div class="input-group">
+            <input type="text" id="queryInput" placeholder="Ask about Navyakosh organic fertilizer..." value="What is Navyakosh organic fertilizer?">
+            <button onclick="testAPI()">Send Query</button>
+        </div>
+        
+        <div id="response" class="response" style="display: none;"></div>
+    </div>
+
+    <h3>📝 Sample Questions to Try:</h3>
+    <ul>
+        <li>What is Navyakosh organic fertilizer?</li>
+        <li>How do I apply Navyakosh to my crops?</li>
+        <li>Can I use Navyakosh with other fertilizers?</li>
+        <li>What are the benefits of using Navyakosh?</li>
+        <li>Where can I buy Navyakosh?</li>
+    </ul>
+
+    <script>
+        async function testAPI() {
+            const query = document.getElementById('queryInput').value;
+            const responseDiv = document.getElementById('response');
+            
+            if (!query.trim()) {
+                alert('Please enter a question!');
+                return;
+            }
+            
+            // Show loading
+            responseDiv.style.display = 'block';
+            responseDiv.className = 'response loading';
+            responseDiv.textContent = 'Thinking... 🤔';
+            
+            try {
+                const response = await fetch('https://ai-chat-bot-versel-vw5h.vercel.app/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ query: query })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    responseDiv.className = 'response success';
+                    responseDiv.textContent = `✅ Response: ${data.response}\n\n📊 Sources: ${data.sources} documents\n🤖 Model: ${data.model}`;
+                } else {
+                    responseDiv.className = 'response error';
+                    responseDiv.textContent = `❌ Error: ${data.error || 'Unknown error'}`;
+                }
+                
+            } catch (error) {
+                responseDiv.className = 'response error';
+                responseDiv.textContent = `❌ Network Error: ${error.message}`;
+            }
+        }
+        
+        // Allow Enter key to submit
+        document.getElementById('queryInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                testAPI();
+            }
+        });
+    </script>
+</body>
+</html>

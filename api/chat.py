@@ -44,7 +44,7 @@ def search_documents(query_embedding, limit=3):
         embedding_str = '[' + ','.join(map(str, query_embedding)) + ']'
         
         query = """
-        SELECT title, content, 
+        SELECT content, doc_metadata, 
                1 - (embedding <=> %s::vector) as similarity
         FROM documents 
         ORDER BY embedding <=> %s::vector 
@@ -68,7 +68,7 @@ def generate_response(query, context_docs):
     try:
         # Prepare context from retrieved documents
         context = "\n\n".join([
-            f"Document: {doc['title']}\nContent: {doc['content']}"
+            f"Document: {doc.get('doc_metadata', {}).get('product_name', 'Unknown')}\nContent: {doc['content']}"
             for doc in context_docs
         ])
         
